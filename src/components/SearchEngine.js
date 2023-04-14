@@ -6,10 +6,9 @@ function SearchEngine() {
 
   const getAllCards = () => {
     axios
-      .get(`https://api.magicthegathering.io/v1/cards?`)
+      .get(`https://api.scryfall.com/cards/search?order=name&dir=asc&q=lang:en`)
       .then((response) => {
-        console.log(response.data.cards);
-        setCardsList(response.data.cards);
+        setCardsList(response.data.data);
       })
       .catch((error) => console.log(error));
   };
@@ -29,8 +28,17 @@ function SearchEngine() {
       {cardsList.map((card, index) => {
         return (
           <div key={index}>
+            <a href={card.id}>
             <h3>{card.name}</h3>
-            <img src={card.imageUrl} alt={card.name} />
+            {card.image_uris ? (
+              <img
+                src={card.image_uris.small}
+                alt={card.name}
+              />
+            ) : (
+              ""
+            )}
+            </a>
           </div>
         );
       })}
