@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+import Select from "react-select";
+
+import types from "../typeList.json";
+
 function SearchEngine() {
   const [cardsList, setCardsList] = useState(null);
   const [numberOfPage, setNumberOfPage] = useState(null);
@@ -12,11 +16,12 @@ function SearchEngine() {
   const [colorList, setColorlist] = useState("");
   const [typeColorSearch, setTypeColorSearch] = useState("=");
   const [ColorSearchParam, setColorSearchParam] = useState("");
+  const [typeSearchParam, setTypeSearchParam] = useState("");
 
   const getAllCards = () => {
     axios
       .get(
-        `https://api.scryfall.com/cards/search?unique=prints&order=name&dir=asc&q=lang:en+${ColorSearchParam}&page=${currentPage}`
+        `https://api.scryfall.com/cards/search?unique=prints&order=name&dir=asc&q=lang:en+${ColorSearchParam}+${typeSearchParam}&page=${currentPage}`
       )
       .then((response) => {
         console.log("response:.........", response.data);
@@ -146,6 +151,15 @@ function SearchEngine() {
     }
   };
 
+  const handleSubmitType = (e) => {
+    let result = e.map(a => a.value.toLowerCase()).join("+type=");
+    if(result === ""){
+      setTypeSearchParam("");
+    } else {
+      setTypeSearchParam("type="+result);
+    }
+  };
+
   useEffect(() => {
     getAllCards();
   }, []);
@@ -154,7 +168,7 @@ function SearchEngine() {
     setCardsList(null);
     getAllCards();
     managePagination();
-  }, [currentPage, ColorSearchParam]);
+  }, [currentPage, ColorSearchParam, typeSearchParam]);
 
   useEffect(() => {
     createColorSearchParam();
@@ -167,6 +181,14 @@ function SearchEngine() {
         <h3>Select Color</h3>
         <p>{colorList}</p>
         <p>{typeColorSearch}</p>
+        <p>{typeSearchParam}</p>
+        <form>
+          <Select
+            isMulti
+            options={types}
+            onChange={(e) => handleSubmitType(e)}
+          />
+        </form>
         <form>
           <select
             name="colorTypeSearch"
