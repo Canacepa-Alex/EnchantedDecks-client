@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Select from "react-select";
 
@@ -374,6 +375,7 @@ function SearchEngine() {
       <div className="flex justify-center flex-wrap overflow-scroll">
       {cardsList ? displayCard() : <p>..loading</p>}
       </div>
+      {displayPagination()}
     </div>
   );
 }
