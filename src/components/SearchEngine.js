@@ -10,11 +10,13 @@ function SearchEngine() {
   const [nextDisabled, setNextDisabled] = useState("");
 
   const [colorList, setColorlist] = useState("");
+  const [typeColorSearch, setTypeColorSearch] = useState("=");
+  const [ColorSearchParam, setColorSearchParam] = useState("");
 
   const getAllCards = () => {
     axios
       .get(
-        `https://api.scryfall.com/cards/search?unique=prints&order=name&dir=asc&q=lang:en+&page=${currentPage}`
+        `https://api.scryfall.com/cards/search?unique=prints&order=name&dir=asc&q=lang:en+${ColorSearchParam}&page=${currentPage}`
       )
       .then((response) => {
         console.log("response:.........", response.data);
@@ -63,23 +65,17 @@ function SearchEngine() {
   };
 
   const handleClick = (e) => {
-    console.log("e........", e);
-    setCardsList(null);
     switch (e.target.id) {
       case "btn-previous":
-        console.log("previous");
         pagination(1, e.target.id);
         break;
       case "btn-next":
-        console.log("next");
         pagination(1, e.target.id);
         break;
       case "btn-first":
-        console.log("first");
         pagination(currentPage - 1, e.target.id);
         break;
       case "btn-last":
-        console.log("last");
         pagination(numberOfPage - currentPage, e.target.id);
         break;
       default:
@@ -88,24 +84,20 @@ function SearchEngine() {
   };
 
   const pagination = (value, btnId) => {
-    console.log("value.......", value);
     if (
       (btnId === "btn-previous" || btnId === "btn-first") &&
       currentPage > 1
     ) {
-      console.log("previous2");
       setCurrentPage(currentPage - value);
     } else if (
       (btnId === "btn-next" || btnId === "btn-last") &&
       currentPage < numberOfPage
     ) {
-      console.log("next2");
       setCurrentPage(currentPage + value);
     }
   };
 
   const managePagination = () => {
-    console.log("currentPage........", currentPage);
     if (currentPage === 1) {
       setPreviousDisabled("disabled");
       setNextDisabled("");
@@ -136,15 +128,22 @@ function SearchEngine() {
   };
 
   const handleSubmitColor = (e) => {
-    console.log("handleSubmit e", e);
     if (e.target.checked) {
       setColorlist(colorList + e.target.value);
     } else {
-      const colorArray = colorList.split("").filter((element) => element !== e.target.value);
-      setColorlist(colorArray.join(''));
-      console.log("colorArray.......", colorArray.join(''));
+      const colorArray = colorList
+        .split("")
+        .filter((element) => element !== e.target.value);
+      setColorlist(colorArray.join(""));
     }
-    console.log("colorList.......", colorList);
+  };
+
+  const createColorSearchParam = () => {
+    if (colorList !== "") {
+      setColorSearchParam("color" + typeColorSearch + colorList);
+    } else {
+      setColorSearchParam("");
+    }
   };
 
   useEffect(() => {
@@ -152,17 +151,31 @@ function SearchEngine() {
   }, []);
 
   useEffect(() => {
+    setCardsList(null);
     getAllCards();
     managePagination();
-  }, [currentPage]);
+  }, [currentPage, ColorSearchParam]);
+
+  useEffect(() => {
+    createColorSearchParam();
+  }, [typeColorSearch, colorList]);
 
   return (
     <div className="cards-list">
       <h1>Search Engine</h1>
       <div>
-        <h3>Selec Color</h3>
+        <h3>Select Color</h3>
         <p>{colorList}</p>
+        <p>{typeColorSearch}</p>
         <form>
+          <select
+            name="colorTypeSearch"
+            onChange={(e) => setTypeColorSearch(e.target.value)}
+          >
+            <option value="=">Exactly these colors</option>
+            <option value=">=">Including these colors</option>
+            <option value="<=">At most these colors</option>
+          </select>
           <label>
             Blue
             <input
