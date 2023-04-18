@@ -26,6 +26,7 @@ export default function LoginPage(props) {
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
+        console.log("test");
         storeToken(response.data.authToken);
         authenticateUser();
         navigate("/");
