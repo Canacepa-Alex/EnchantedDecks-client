@@ -5,6 +5,8 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Deck from "../components/Deck";
 
+const API_URL = process.env.REACT_APP_SERVER_URL;
+
 export default function Profile(props) {
   const { userId } = useParams();
   const { user } = useContext(AuthContext);
@@ -12,7 +14,7 @@ export default function Profile(props) {
 
   const getUser = () => {
     axios
-      .get(`http://localhost:5005/api/users/${userId}`)
+      .get(`${API_URL}/api/users/${userId}`)
       .then((response) => {
         setUserProfile(response.data);
       })
