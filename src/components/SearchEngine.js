@@ -8,24 +8,35 @@ import types from "../typeList.json";
 
 function SearchEngine() {
   const [cardsList, setCardsList] = useState(null);
+
+  const [numberOfCard, setNumberOfCard] = useState(null);
   const [numberOfPage, setNumberOfPage] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [previousDisabled, setPreviousDisabled] = useState("disabled");
-  const [nextDisabled, setNextDisabled] = useState("");
+  const [nextDisabled, setNextDisabled] = useState("disabled");
 
-  const [colorList, setColorlist] = useState("");
-  const [typeColorSearch, setTypeColorSearch] = useState("=");
-  const [ColorSearchParam, setColorSearchParam] = useState("");
-  const [typeSearchParam, setTypeSearchParam] = useState("");
+  const [orderType, setOrderType] = useState("name");
+  const [orderDir, setOrderDir] = useState("asc");
+
+  const [colorList, setColorlist] = useState(""); //store the list of color
+  const [typeColorSearch, setTypeColorSearch] = useState("="); // store how the list of color will be searched = <= >=
+  const [ColorSearchParam, setColorSearchParam] = useState(""); // mix colorList & ColorSearchParam for the query
+
+  const [manaCost, setManaCost] = useState(null); //store the mana cost value
+  const [typeManaCostSearch, setTypeManaCostSearch] = useState("="); // store how mana cost will be searched = <= >=
+  const [manaCostSearchParam, setManaCostSearchParam] = useState(""); // mix manaCost & typeManaCostSearch for the query
+
+  const [typeSearchParam, setTypeSearchParam] = useState(""); // join the response array from selec and used for query
 
   const getAllCards = () => {
     axios
       .get(
-        `https://api.scryfall.com/cards/search?unique=prints&order=name&dir=asc&q=lang:en+${ColorSearchParam}+${typeSearchParam}&page=${currentPage}`
+        `https://api.scryfall.com/cards/search?unique=prints&order=${orderType}&dir=${orderDir}&q=game=paper+lang:en+${ColorSearchParam}+${typeSearchParam}+${manaCostSearchParam}&page=${currentPage}`
       )
       .then((response) => {
         console.log("response:.........", response.data);
+        setNumberOfCard(response.data.total_cards);
         setNumberOfPage(Math.ceil(response.data.total_cards / 175));
         setCardsList([...response.data.data]);
       })
@@ -104,7 +115,11 @@ function SearchEngine() {
   };
 
   const managePagination = () => {
-    if (currentPage === 1) {
+    console.log("numberOfCard.......", numberOfCard);
+    if (numberOfCard <= 175) {
+      setPreviousDisabled("disabled");
+      setNextDisabled("disabled");
+    } else if (currentPage === 1) {
       setPreviousDisabled("disabled");
       setNextDisabled("");
     } else if (currentPage === numberOfPage) {
@@ -119,132 +134,135 @@ function SearchEngine() {
   const displayCard = () => {
     return cardsList.map((card, index) => {
       return (
-          <div key={index} className="relative m-2 grid h-[20rem] w-full max-w-[14rem] items-end justify-center overflow-hidden text-center rounded-lg shadow">
-                {card.image_uris ? (
+        <div
+          key={index}
+          className="relative m-2 grid h-[20rem] w-full max-w-[14rem] items-end justify-center overflow-hidden text-center rounded-lg shadow"
+        >
+          {card.image_uris ? (
+            <div
+              floated={false}
+              shadow={false}
+              color="transparent"
+              className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${card.image_uris.border_crop})`,
+              }}
+            >
+              <div className="to-bg-black-10 absolute inset-0 h-full w-full hover:bg-gradient-to-t from-black/80 via-black/50">
+                <div className="flex flex-col justify-between h-full w-full py-8 px-6 md:px-12 text-transparent hover:text-white dark:hover:text-white">
                   <div
-                    floated={false}
-                    shadow={false}
-                    color="transparent"
-                    className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url(${card.image_uris.border_crop})`,
-                    }}
+                    variant="h2"
+                    color="white"
+                    className="mb-2 text-2xl font-bold tracking-tight"
                   >
-                    <div className="to-bg-black-10 absolute inset-0 h-full w-full hover:bg-gradient-to-t from-black/80 via-black/50">
-                      <div className="flex flex-col justify-between h-full w-full py-8 px-6 md:px-12 text-transparent hover:text-white dark:hover:text-white">
-                        <div
-                          variant="h2"
-                          color="white"
-                          className="mb-2 text-2xl font-bold tracking-tight"
-                        >
-                          {card.name}
-                        </div>
-                        <div className="mb-4 flex">
-                          <Link
-                            to="#"
-                            className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                          >
-                            Details
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4 ml-2 -mr-1"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                              />
-                            </svg>
-                          </Link>
-                          <Link
-                            to="#"
-                            className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium text-white transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:text-white dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
+                    {card.name}
                   </div>
-                ) : (
-                  <div
-                    floated={false}
-                    shadow={false}
-                    color="transparent"
-                    className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
-                  >
-                    <div className="to-bg-black-10 absolute inset-0 h-full w-full hover:bg-gradient-to-t from-black/80 via-black/50">
-                    <div className="flex flex-col justify-between h-full w-full py-8 px-6 md:px-12 text-transparent hover:text-white dark:hover:text-white">
-                        <div
-                          variant="h2"
-                          color="white"
-                          className="mb-2 text-2xl font-bold tracking-tight"
-                        >
-                          {card.name}
-                        </div>
-                        <div className="mb-4 flex">
-                          <Link
-                            to="#"
-                            className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                          >
-                            Details
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4 ml-2 -mr-1"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                              />
-                            </svg>
-                          </Link>
-                          <Link
-                            to="#"
-                            className="inline-flex items-center rounded-xl px-1 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:text-white dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="mb-4 flex">
+                    <Link
+                      to="#"
+                      className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                    >
+                      Details
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4 ml-2 -mr-1"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </Link>
+                    <Link
+                      to="#"
+                      className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium text-white transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:text-white dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </Link>
                   </div>
-                )}
+                </div>
               </div>
+            </div>
+          ) : (
+            <div
+              floated={false}
+              shadow={false}
+              color="transparent"
+              className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
+            >
+              <div className="to-bg-black-10 absolute inset-0 h-full w-full hover:bg-gradient-to-t from-black/80 via-black/50">
+                <div className="flex flex-col justify-between h-full w-full py-8 px-6 md:px-12 text-transparent hover:text-white dark:hover:text-white">
+                  <div
+                    variant="h2"
+                    color="white"
+                    className="mb-2 text-2xl font-bold tracking-tight"
+                  >
+                    {card.name}
+                  </div>
+                  <div className="mb-4 flex">
+                    <Link
+                      to="#"
+                      className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                    >
+                      Details
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4 ml-2 -mr-1"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </Link>
+                    <Link
+                      to="#"
+                      className="inline-flex items-center rounded-xl px-1 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-600 active:bg-purple-700 dark:text-white dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       );
     });
   };
@@ -269,11 +287,27 @@ function SearchEngine() {
   };
 
   const handleSubmitType = (e) => {
-    let result = e.map(a => a.value.toLowerCase()).join("+type=");
-    if(result === ""){
+    let result = e.map((a) => a.value.toLowerCase()).join("+type=");
+    if (result === "") {
       setTypeSearchParam("");
     } else {
-      setTypeSearchParam("type="+result);
+      setTypeSearchParam("type=" + result);
+    }
+  };
+
+  const createManaCostSearchParam = () => {
+    if (manaCost === "" || manaCost === null) {
+      setManaCostSearchParam("");
+    } else {
+      setManaCostSearchParam("cmc" + typeManaCostSearch + manaCost);
+    }
+  };
+
+  const toggleOrderDir = () => {
+    if (orderDir === "asc") {
+      setOrderDir("desc");
+    } else {
+      setOrderDir("asc");
     }
   };
 
@@ -285,21 +319,72 @@ function SearchEngine() {
     setCardsList(null);
     getAllCards();
     managePagination();
-  }, [currentPage, ColorSearchParam, typeSearchParam]);
+  }, [
+    currentPage,
+    numberOfCard,
+    ColorSearchParam,
+    typeSearchParam,
+    manaCostSearchParam,
+    orderType,
+    orderDir,
+  ]);
 
   useEffect(() => {
     createColorSearchParam();
   }, [typeColorSearch, colorList]);
 
+  useEffect(() => {
+    createManaCostSearchParam();
+  }, [manaCost, typeManaCostSearch]);
+
   return (
     <div className="cards-list">
       <h1>Search Engine</h1>
       <div>
-        <h3>Select Color</h3>
-        <p>{colorList}</p>
-        <p>{typeColorSearch}</p>
-        <p>{typeSearchParam}</p>
+        <div>
+          <p>DEV VALUES -TO BE REMOVED</p>
+          <br />
+          <p>colorList .{colorList}.</p>
+          <p>typeColorSearch .{typeColorSearch}.</p>
+          <p>ColorSearchParam .{ColorSearchParam}.</p>
+          <br />
+          <p>manaCost .{manaCost}.</p>
+          <p>typeManaCostSearch .{typeManaCostSearch}.</p>
+          <p>manaCostSearchParam .{manaCostSearchParam}.</p>
+          <br />
+          <p>typeSearchParam .{typeSearchParam}.</p>
+          <br />
+          <p>orderType .{orderType}.</p>
+          <p>orderDir .{orderDir}.</p>
+          <br />
+        </div>
+
         <form>
+          <span>Mana Cost</span>
+          <select
+            name="manaCostTypeSearch"
+            onChange={(e) => setTypeManaCostSearch(e.target.value)}
+          >
+            <option value="=" default>
+              equal to
+            </option>
+            <option value="<">less than</option>
+            <option value=">">greater than</option>
+            <option value="<=">less than or equal to</option>
+            <option value=">=">greater than or equal to</option>
+            <option value="!=">not equal to</option>
+          </select>
+          <label>
+            <input
+              type="number"
+              name="manaCost"
+              value={manaCost}
+              onChange={(e) => setManaCost(e.target.value)}
+            />
+          </label>
+        </form>
+        <form>
+          <span>Type Line</span>
           <Select
             isMulti
             options={types}
@@ -307,11 +392,14 @@ function SearchEngine() {
           />
         </form>
         <form>
+          <span>Mana Color</span>
           <select
             name="colorTypeSearch"
             onChange={(e) => setTypeColorSearch(e.target.value)}
           >
-            <option value="=">Exactly these colors</option>
+            <option value="=" default>
+              Exactly these colors
+            </option>
             <option value=">=">Including these colors</option>
             <option value="<=">At most these colors</option>
           </select>
@@ -371,9 +459,24 @@ function SearchEngine() {
           </label>
         </form>
       </div>
+      <span>Order By:</span>
+      <select
+        name="manaCostTypeSearch"
+        onChange={(e) => setOrderType(e.target.value)}
+      >
+        <option value="name" default>
+          Name
+        </option>
+        <option value="rarity">Rarity</option>
+        <option value="color">Color</option>
+        <option value="power">Power</option>
+        <option value="cmc">Mana Cost</option>
+      </select>
+      <button onClick={toggleOrderDir}>Toggle Order {orderDir}</button>
+      <p>number of cards: {numberOfCard}</p>
       {displayPagination()}
       <div className="flex justify-center flex-wrap overflow-scroll">
-      {cardsList ? displayCard() : <p>..loading</p>}
+        {cardsList ? displayCard() : <p>..loading</p>}
       </div>
       {displayPagination()}
     </div>
