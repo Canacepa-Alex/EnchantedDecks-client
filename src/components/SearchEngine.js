@@ -326,7 +326,7 @@ function SearchEngine() {
     typeSearchParam,
     manaCostSearchParam,
     orderType,
-    orderDir
+    orderDir,
   ]);
 
   useEffect(() => {
@@ -459,20 +459,20 @@ function SearchEngine() {
           </label>
         </form>
       </div>
-        <span>Order By:</span>
-        <select
-          name="manaCostTypeSearch"
-          onChange={(e) => setOrderType(e.target.value)}
-        >
-          <option value="name" default>
-            Name
-          </option>
-          <option value="rarity">Rarity</option>
-          <option value="color">Color</option>
-          <option value="power">Power</option>
-          <option value="cmc">Mana Cost</option>
-        </select>
-        <button onClick={toggleOrderDir}>Toggle Order {orderDir}</button>
+      <span>Order By:</span>
+      <select
+        name="manaCostTypeSearch"
+        onChange={(e) => setOrderType(e.target.value)}
+      >
+        <option value="name" default>
+          Name
+        </option>
+        <option value="rarity">Rarity</option>
+        <option value="color">Color</option>
+        <option value="power">Power</option>
+        <option value="cmc">Mana Cost</option>
+      </select>
+      <button onClick={toggleOrderDir}>Toggle Order {orderDir}</button>
       <p>number of cards: {numberOfCard}</p>
       {displayPagination()}
       <div className="flex justify-center flex-wrap overflow-scroll">
