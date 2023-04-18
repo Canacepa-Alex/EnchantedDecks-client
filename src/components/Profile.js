@@ -2,8 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
-import Navbar from "../components/Navbar";
-import Deck from "../components/Deck";
 
 export default function Profile(props) {
   const { userId } = useParams();
@@ -21,26 +19,16 @@ export default function Profile(props) {
 
   const getCurrentUser = () => {};
 
-  const displayDecks = () => {
-    return userProfile.decks.map((deck, index) => {
-        return (
-            <Deck deckId={deck._id} key={index} />
-        )
-    })}
-
   useEffect(() => {
     getUser();
   }, []);
   return (
-      <>
-    <Navbar/>
+    <>
     <br />
     <br />
     <br />
       Profile
       {userProfile ? <h1>{userProfile.name}</h1> : ""}
-
-    
     </>
   );
 }
