@@ -11,7 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App h-full bg-gray-100">
       <Routes>
         <Route exact path="/" element={<HomePage />}/>
         <Route exact path="/user/:userId" element={<ProfilePage />}/>

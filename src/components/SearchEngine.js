@@ -233,7 +233,7 @@ function SearchEngine() {
     <div className="">
       <h1>Search Engine</h1>
       {displayPagination()}
-      <div className="flex justify-center flex-wrap overflow-scroll">
+      <div className="flex h-96 justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
       {cardsList ? displayCard() : <p>..loading</p>}
       </div>
       {displayPagination()}
