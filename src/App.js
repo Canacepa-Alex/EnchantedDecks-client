@@ -20,7 +20,6 @@ function App() {
         <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
         <Route exact path="/decks/:deckId" element={<DeckDetail />}/>
       </Routes>
-
     </div>
   );
 }
