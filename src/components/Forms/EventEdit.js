@@ -1,29 +1,36 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Navbar from "../Navbar";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/auth.context";
+import { AuthContext } from "../context/auth.context";
 
 const API_URL = "http://localhost:5005";
 
 export default function DeckCreation() {
+  const { eventId } = useParams();
   const { user } = useContext(AuthContext);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [type, setType] = useState("");
+  const [position, setPosition] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   const navigate = useNavigate();
 
   const handleName = (e) => setName(e.target.value);
   const handleDescription = (e) => setDescription(e.target.value);
+  const handleDate = (e) => setDate(e.target.value);
+  const handleType = (e) => setType(e.target.value);
+  const handlePosition = (e) => setPosition(e.target.value);
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    const requestBody = { description, name };
+    const requestBody = { description, name, position, date };
     axios
-      .post(`${API_URL}/decks`, requestBody)
+      .put(`${API_URL}/events/${eventId}`, requestBody)
       .then((response) => {
         navigate(`/profile/${user._id}`);
       })
@@ -93,6 +100,99 @@ export default function DeckCreation() {
                     name="description"
                     value={description}
                     onChange={handleDescription}
+                  />
+                  <span className="absolute inset-y-0 inline-flex items-center right-4">
+                    <span className="w-fit">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-gray-400"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">
+                  <p>Date</p>
+                </label>
+                <div className="relative mt-1">
+                  <input
+                    className="w-full p-3 pr-12 text-sm shadow-sm border border-gray-200 rounded-global"
+                    type="date"
+                    name="date"
+                    value={date}
+                    onChange={handleDate}
+                  />
+                  <span className="absolute inset-y-0 inline-flex items-center right-4">
+                    <span className="w-fit">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-gray-400"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">
+                  <p>Type</p>
+                </label>
+                <div className="relative mt-1">
+                  <input
+                    className="w-full p-3 pr-12 text-sm shadow-sm border border-gray-200 rounded-global"
+                    type="text"
+                    name="type"
+                    value={type}
+                    onChange={handleType}
+                  />
+                  <span className="absolute inset-y-0 inline-flex items-center right-4">
+                    <span className="w-fit">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-gray-400"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">
+                  <p>Position</p>
+                </label>
+                <div className="relative mt-1">
+                  <input
+                    className="w-full p-3 pr-12 text-sm shadow-sm border border-gray-200 rounded-global"
+                    type="text"
+                    name="position"
+                    value={position}
+                    onChange={handlePosition}
                   />
                   <span className="absolute inset-y-0 inline-flex items-center right-4">
                     <span className="w-fit">
