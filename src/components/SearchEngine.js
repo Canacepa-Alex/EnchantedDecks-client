@@ -322,7 +322,7 @@ function SearchEngine() {
       <button onClick={toggleOrderDir}>Toggle Order {orderDir}</button>
       <p>number of cards: {numberOfCard}</p>
       {displayPagination()}
-      <div className="flex justify-center flex-wrap overflow-scroll">
+      <div className="flex h-96 justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
         <CardDisplay listOfCard={cardsList} />
       </div>
       {displayPagination()}
