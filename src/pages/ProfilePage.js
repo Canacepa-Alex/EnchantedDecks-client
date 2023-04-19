@@ -12,6 +12,9 @@ export default function Profile(props) {
   const { user } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
 
+  const [deckName, setDeckName] = useState(null);
+  const [deckDescription, setDeckDescription] = useState(null);
+
   const getUser = () => {
     axios
       .get(`${API_URL}/api/users/${userId}`)
@@ -25,24 +28,37 @@ export default function Profile(props) {
 
   const displayDecks = () => {
     return userProfile.decks.map((deck, index) => {
-        return (
-            <Deck deckId={deck._id} key={index} />
-        )
-    })}
+      return <Deck deckId={deck._id} key={index} />;
+    });
+  };
+
+  const handleSubmit = (element) => {
+    element.preventDefault();
+    const newDeck = {
+      name: deckName,
+      description: deckDescription,
+      user: userId,
+    };
+    const storedToken = localStorage.getItem('authToken');  
+    axios
+      .post(API_URL + "/api/decks", newDeck, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((res) => {});
+  };
 
   useEffect(() => {
     getUser();
   }, []);
+
   return (
-      <>
-    <Navbar/>
-    <br />
-    <br />
-    <br />
+    <>
+      <Navbar />
+      <br />
+      <br />
+      <br />
       Profile
       {userProfile ? <h1>{userProfile.name}</h1> : ""}
-
-    
     </>
   );
 }
