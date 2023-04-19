@@ -16,7 +16,8 @@ export default function Navbar() {
     { name: 'Reports', href: '#', current: false },
   ]
   const userNavigation = [
-    { name: 'Your Profile', href: `/profile/` },
+    { name: 'Your Profile', href: `/users/${user._id}` },
+    { name: 'Edit profile', href: `/users/${user._id}/edit` },
     { name: 'Sign out', href: () => {logOutUser()} },
   ]
 
