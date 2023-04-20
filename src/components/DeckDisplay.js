@@ -2,33 +2,21 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_SERVER_URL;
+
 
 function DeckDisplay(props) {
-    console.log(props);
   const IdDeck = props.deckId;
-  
-  console.log(IdDeck);
-  const [deckDetail, setdeckDetail] = useState(null);
   const [deckCards, setDeckCards] = useState([]);
-  const getDeck = () => {
-    axios
-      .get(`${API_URL}/api/decks/${IdDeck}`)
-      .then((response) => {
-        console.log("response getDeck:.........", response.data);
-        setdeckDetail(response.data);
-      })
-      .catch((error) => console.log(error));
-  };
+  
 
   const getCardsDetail = () => {
-    if (deckDetail) {
+    if (props.detailDeck) {
       setDeckCards([]);
-      deckDetail.cards.map((card, index) => {
+      props.detailDeck.cards.map((card, index) => {
         axios
           .get(`https://api.scryfall.com/cards/${card.cardKey}`)
           .then((response) => {
-            response.data.numberOfCard = deckDetail.cards[index].numberOfCard;
+            response.data.numberOfCard = props.detailDeck.cards[index].numberOfCard;
 
             setDeckCards((oldArray) => [...oldArray, response.data]);
           })
@@ -47,7 +35,6 @@ function DeckDisplay(props) {
 
   const displayDeckCard = () => {
     return deckCards.map((card, index) => {
-        console.log("card........", card);
         return (
           <div
             key={index}
@@ -64,7 +51,6 @@ function DeckDisplay(props) {
 
   const displayDeckList = () => {
     return deckCards.map((card, index) => {
-        console.log("card........", card);
         return (
           <div key={index}>
               <p>Name: {card.name}</p>
@@ -74,19 +60,17 @@ function DeckDisplay(props) {
       });
   };
 
-  useEffect(() => {
-    getDeck();
-  }, []);
+  
 
   useEffect(() => {
     getCardsDetail();
-  }, [deckDetail]);
+  }, [props.detailDeck]);
 
   useEffect(() => {
     displayDeck();
   }, [deckCards]);
 
-  return <>{deckDetail ? displayDeck() : <p>..loading</p>}</>;
+  return <>{props.detailDeck ? displayDeck() : <p>..loading</p>}</>;
 }
 
 export default DeckDisplay;
