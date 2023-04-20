@@ -3,13 +3,15 @@ import { useContext, useState, Fragment } from "react";
 import { AuthContext } from "../context/auth.context";
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import cardLogo from "../back-cards.png"
 
 export default function Navbar() {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
   const [navbarOpen, setNavbarOpen] = useState(false);
-
+  console.log("USER :",user);
   const navigation = [
-    { name: 'Home', href: '/', current: true },
+    { name: 'Enchated Decks', href: '/', current: true },
+    { name: 'Cards', href: '/', current: false },
     { name: 'Decks', href: '/decks', current: false },
     { name: 'Events', href: '/events', current: false },
   ]
@@ -33,7 +35,7 @@ export default function Navbar() {
                     <div className="flex-shrink-0">
                       <img
                         className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        src={cardLogo}
                         alt="Your Company"
                       />
                     </div>
@@ -62,10 +64,10 @@ export default function Navbar() {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          {isLoggedIn ? 
+                          {user ? 
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img className="h-8 w-8 rounded-full" src={user.imageURL} alt="" />
                           </Menu.Button>
                           : 
                           <div className="hidden md:block">
@@ -163,11 +165,11 @@ export default function Navbar() {
                     </Disclosure.Button>
                   ))}
                 </div>
-                {isLoggedIn 
+                {user 
                 ? <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img className="h-10 w-10 rounded-full" src={user.imageURL} alt="" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>
