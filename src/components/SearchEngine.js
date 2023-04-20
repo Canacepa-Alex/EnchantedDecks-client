@@ -19,7 +19,8 @@ import Select from "react-select";
 import types from "../typeList.json";
 import { Link } from "react-router-dom";
 
-function SearchEngine() {
+function SearchEngine(props) {
+
   const [cardsList, setCardsList] = useState(null);
 
   const [numberOfCard, setNumberOfCard] = useState(null);
@@ -48,7 +49,6 @@ function SearchEngine() {
         `https://api.scryfall.com/cards/search?unique=prints&order=${orderType}&dir=${orderDir}&q=game=paper+lang:en+${ColorSearchParam}+${typeSearchParam}+${manaCostSearchParam}&page=${currentPage}`
       )
       .then((response) => {
-        console.log("response:.........", response.data);
         setNumberOfCard(response.data.total_cards);
         setNumberOfPage(Math.ceil(response.data.total_cards / 175));
         setCardsList([...response.data.data]);
@@ -566,7 +566,7 @@ function SearchEngine() {
       </Transition.Root>
 
       <div className="flex w-full h-[45rem] justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
-        <CardDisplay listOfCard={cardsList} />
+        <CardDisplay listOfCard={cardsList} handleClick={props.handleClick}/>
       </div>
     </div>
   );

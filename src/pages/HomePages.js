@@ -1,9 +1,10 @@
+import { AuthContext } from "../context/auth.context";
+import { useContext, useEffect, useState } from "react";
 
 import IsPrivate from "../components/IsPrivate";
 import SearchEngine from "../components/SearchEngine";
-import { AuthContext } from "../context/auth.context";
-import { useContext, useEffect, useState } from "react";
 import SideBarHomepage from "../components/SidebarHomepage";
+
 import axios from "axios";
 
 export default function HomePage() {
