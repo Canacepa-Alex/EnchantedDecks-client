@@ -17,7 +17,6 @@ export default function DeckDetail() {
 
   const [deckDetail, setdeckDetail] = useState(null);
 
-  console.log("user......", user);
   const getDeck = () => {
     axios
       .get(`${API_URL}/api/decks/${deckId}`)
