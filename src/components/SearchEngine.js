@@ -19,8 +19,7 @@ import Select from "react-select";
 import types from "../typeList.json";
 import { Link } from "react-router-dom";
 
-function SearchEngine(props) {
-
+function SearchEngine() {
   const [cardsList, setCardsList] = useState(null);
 
   const [numberOfCard, setNumberOfCard] = useState(null);
@@ -43,12 +42,15 @@ function SearchEngine(props) {
 
   const [typeSearchParam, setTypeSearchParam] = useState(""); // join the response array from selec and used for query
 
+  const [open, setOpen] = useState(false);
+  
   const getAllCards = () => {
     axios
       .get(
         `https://api.scryfall.com/cards/search?unique=prints&order=${orderType}&dir=${orderDir}&q=game=paper+lang:en+${ColorSearchParam}+${typeSearchParam}+${manaCostSearchParam}&page=${currentPage}`
       )
       .then((response) => {
+        console.log("response:.........", response.data);
         setNumberOfCard(response.data.total_cards);
         setNumberOfPage(Math.ceil(response.data.total_cards / 175));
         setCardsList([...response.data.data]);
@@ -283,7 +285,6 @@ function SearchEngine(props) {
     }
   };
 
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     getAllCards();
@@ -566,7 +567,7 @@ function SearchEngine(props) {
       </Transition.Root>
 
       <div className="flex w-full h-[45rem] justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
-        <CardDisplay listOfCard={cardsList} handleClick={props.handleClick}/>
+        <CardDisplay listOfCard={cardsList} />
       </div>
     </div>
   );
