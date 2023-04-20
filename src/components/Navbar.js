@@ -16,7 +16,6 @@ export default function Navbar() {
   const userNavigation = user ? [
     { name: 'Your Profile', href: `/users/${user._id}` },
     { name: 'Edit profile', href: `/users/${user._id}/edit` },
-    { name: 'Sign out', href: () => {logOutUser()} },
   ] : [];
 
   function classNames(...classes) {
@@ -76,7 +75,14 @@ export default function Navbar() {
                             to='/login'
                             className= 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
                           >
-                            LogIn
+                            Sign In
+                          </Link>
+                          <Link
+                            
+                            to='/signup'
+                            className= 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
+                          >
+                            Sign Up
                           </Link>
                         
                       </div>
@@ -108,6 +114,19 @@ export default function Navbar() {
                                 )}
                               </Menu.Item>
                             ))}
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    onClick={()=> logOutUser()}
+                                    className={classNames(
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700'
+                                    )}
+                                  >
+                                    Log out
+                                  </button>
+                                )}
+                              </Menu.Item>
                           </Menu.Items>
                         </Transition>
                       </Menu>
@@ -175,7 +194,14 @@ export default function Navbar() {
                         to='/login'
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
-                        Login
+                        Sign In
+                      </Disclosure.Button>
+                      <Disclosure.Button
+                        as="a"
+                        to='/signup'
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                      >
+                        Sign Up
                       </Disclosure.Button>
                   </div>
                 }
