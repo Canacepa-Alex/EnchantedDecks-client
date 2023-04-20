@@ -28,7 +28,7 @@ export default function EditDeck() {
       .catch((error) => console.log(error));
   };
 
-  const handleClick = (e) => {
+  const handleClickAdd = (e) => {
     console.log("test e.....", e);
     const requestBody = { cardKey: e, numberOfCard:1 };
     const storedToken = localStorage.getItem("authToken");
@@ -38,6 +38,24 @@ export default function EditDeck() {
       })
       .then((response) => {
         console.log("response.........", response);
+        setdeckDetail(response.data);
+        deckId = deckId;
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleClickRemove = (e) => {
+    console.log("test e.....", e);
+    const requestBody = { cardKey: e, numberOfCard:1 };
+    const storedToken = localStorage.getItem("authToken");
+    axios
+      .put(`${API_URL}/api/decks/${deckId}/removeCard/`, requestBody, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => {
+        console.log("response.........", response);
+        setdeckDetail(response.data);
+        deckId = deckId;
       })
       .catch((error) => console.log(error));
   };
@@ -50,11 +68,11 @@ export default function EditDeck() {
     <div>
       <div className="flex  h-full w-full items-center justify-center 2xl:w-full tails-selected-element">
         <div className=" justify-center h-full w-96 bg-gray-300">
-          <DeckDisplay deckId={deckId} display="list" detailDeck={deckDetail} />
+          <DeckDisplay deckId={deckId} display="list" detailDeck={deckDetail} handleClickRemove={handleClickRemove}/>
         </div>
 
         <div className="flex w-full h-full ">
-          <SearchEngine handleClick={handleClick} />
+          <SearchEngine handleClick={handleClickAdd} />
         </div>
       </div>
     </div>
