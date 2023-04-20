@@ -9,10 +9,12 @@ import IsAnon from "./components/IsAnon";
 import ProfilePage from './pages/ProfilePage';
 import DeckDetail from './pages/DeckDetail';
 import ProfileEdit from './pages/ProfilePageEdit';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <div className="App h-full bg-gray-100">
+    <div className="App h-screen bg-gray-100">
+    <Navbar/>
       <Routes>
         <Route exact path="/" element={<HomePage />}/>
         <Route exact path="/users/:userId" element={<ProfilePage />}/>

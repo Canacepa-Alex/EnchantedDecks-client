@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -33,7 +32,6 @@ export default function SignupPage(props) {
 
   return (
     <div>
-      <Navbar />
       <div className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-lg pt-16 mx-auto sm:max-w-md">
           <h1 className="text-3xl font-bold text-center text-primary-500">
