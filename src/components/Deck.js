@@ -25,7 +25,6 @@ export default function Deck({deckId}) {
   }, []);
   return (
     <>
-      Deck
       {deck ? <h1>{deck.name}</h1> : ""}
     </>
   );
