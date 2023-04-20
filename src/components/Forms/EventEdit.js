@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-import Navbar from "../Navbar";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
@@ -41,7 +40,6 @@ export default function DeckCreation() {
   };
   return (
     <div>
-      <Navbar />
       <div className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-lg pt-16 mx-auto sm:max-w-md">
           <h1 className="text-3xl font-bold text-center text-primary-500">

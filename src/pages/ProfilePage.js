@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import Deck from "../components/Deck";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
@@ -53,7 +52,6 @@ export default function Profile(props) {
 
   return (
     <>
-      <Navbar />
       <header className="bg-white shadow">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">

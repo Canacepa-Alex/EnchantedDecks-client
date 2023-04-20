@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import IsPrivate from "../components/IsPrivate";
 import { Link, useParams } from "react-router-dom";
 
@@ -10,7 +9,6 @@ export default function DeckDetail() {
 
   return (
     <div>
-      <Navbar />
       <div className="flex pt-16 space-x-5 w-full h-full items-center justify-center 2xl:w-full tails-selected-element">
         <div className="flex h-full w-96 bg-gray-300 2xl:h-full "> </div>
         <DeckDisplay deckId={deckId} display="card"/>
