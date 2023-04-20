@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -26,6 +25,7 @@ export default function LoginPage(props) {
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
+        console.log("test");
         storeToken(response.data.authToken);
         authenticateUser();
         navigate("/");
@@ -38,7 +38,6 @@ export default function LoginPage(props) {
 
   return (
     <div>
-      <Navbar />
       <div className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-lg pt-16 mx-auto sm:max-w-md">
           <h1 className="text-3xl font-bold text-center text-primary-500">
