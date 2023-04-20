@@ -13,6 +13,7 @@ import EditDeck from './pages/EditDeck';
 import IsPrivate from "./components/IsPrivate";
 import IsAnon from "./components/IsAnon";
 import Navbar from './components/Navbar';
+import FormsPage from './pages/FormsPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
         <Route exact path="/decks/:deckId/edit" element={<IsPrivate><EditDeck /></IsPrivate>}/>
         <Route exact path="/decks/:deckId" element={<DeckDetail />}/>
+        <Route exact path="/forms/:form" element={<FormsPage />}/>
       </Routes>
     </div>
   );

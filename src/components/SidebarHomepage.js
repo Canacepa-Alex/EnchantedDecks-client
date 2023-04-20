@@ -3,6 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function SideBarHomepage() {
   const [selected, setSelected] = useState(null);
@@ -20,6 +21,15 @@ export default function SideBarHomepage() {
       .catch((error) => console.log(error));
   };
 
+  const getNumberOfCards = (cards) => {
+    let numberOfCards = 0;
+    cards.map((card) => {
+      console.log("card ==>", card);
+      return (numberOfCards += card.numberOfCard);
+    });
+    return numberOfCards;
+  };
+
   useEffect(() => {
     getDecks();
   }, []);
@@ -28,94 +38,52 @@ export default function SideBarHomepage() {
     return classes.filter(Boolean).join(" ");
   }
 
-  const displayDecksDropdown = () => {
+  const displayDecksList = () => {
     return (
-      <Listbox value={selected} onChange={setSelected}>
-        {({ open }) => (
-          <>
-            <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
-              Decks :
-            </Listbox.Label>
-            <div className="relative mt-2">
-              <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                <span className="flex items-center">
-                  {/* <img src={deckId.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full" /> */}
-
-                  {selected && (
-                    <span className="ml-3 block truncate">{selected.name}</span>
-                  )}
-                </span>
-                <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                  <ChevronUpDownIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </span>
-              </Listbox.Button>
-
-              <Transition
-                show={open}
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {decks.map((deck) => (
-                    <Listbox.Option
-                      key={deck.id}
-                      className={({ active }) =>
-                        classNames(
-                          active ? "bg-indigo-600 text-white" : "text-gray-900",
-                          "relative cursor-default select-none py-2 pl-3 pr-9"
-                        )
-                      }
-                      value={deck}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <div className="flex items-center">
-                            <span
-                              className={classNames(
-                                selected ? "font-semibold" : "font-normal",
-                                "ml-3 block truncate"
-                              )}
-                            >
-                              {deck.name}
-                            </span>
-                          </div>
-
-                          {selected ? (
-                            <span
-                              className={classNames(
-                                active ? "text-white" : "text-indigo-600",
-                                "absolute inset-y-0 right-0 flex items-center pr-4"
-                              )}
-                            >
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
+      <ul role="list" className="m-3 divide-y divide-gray-900 ">
+        {decks.map((deck) => (
+          <li key={deck._id} className="flex bg-white rounded-md justify-between gap-x-6 py-5">
+            <div className="flex m-1 gap-x-4">
+              <img
+                className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                src={deck.imageUrl}
+                alt=""
+              />
+              <div className="min-w-0 flex-auto">
+                <p className="text-sm font-semibold leading-6 text-gray-900">
+                  {deck.name}
+                </p>
+                <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                  {getNumberOfCards(deck.cards)} cards
+                </p>
+              </div>
             </div>
-          </>
-        )}
-      </Listbox>
+            <div className="hidden  m-1 sm:flex sm:flex-col sm:items-end">
+              <Link
+                key={deck.name}
+                to={`/decks/${deck._id}/edit`}
+                className="bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              >
+                Edit cards
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
     );
   };
 
   return (
-    <div className="h-full">
-      CREATE DECK
-      {decks ? displayDecksDropdown() : ""}
-      <div className="overflow-auto hover:overflow-y-scroll"></div>
+    <div className="h-[48.8rem] ">
+      <div className=" sm:flex sm:flex-col">
+        <Link
+          to="/forms/deckCreate"
+          className="bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 m-3 text-lg font-medium"
+        >
+          Create Deck
+        </Link>
+      </div>
+      {decks ? displayDecksList() : ""}
     </div>
   );
 }
