@@ -132,6 +132,7 @@ function DeckDisplay(props) {
           <div key={index}>
               <p>Name: {card.name}</p>
             <p>Number: {card.numberOfCard}</p>
+            <button id={card.id} onClick={(e) => props.handleClickRemove(e.target.id)}>remove</button>
           </div>
         );
       });
