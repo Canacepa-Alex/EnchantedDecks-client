@@ -7,7 +7,7 @@ import SideBarHomepage from "../components/SidebarHomepage";
 
 export default function HomePage() {
   const { user } = useContext(AuthContext);
-
+  console.log("Homepage user..........", user)
   return (
     <div>
       <header className="bg-white shadow">

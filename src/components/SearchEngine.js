@@ -48,7 +48,6 @@ function SearchEngine() {
         `https://api.scryfall.com/cards/search?unique=prints&order=${orderType}&dir=${orderDir}&q=game=paper+lang:en+${ColorSearchParam}+${typeSearchParam}+${manaCostSearchParam}&page=${currentPage}`
       )
       .then((response) => {
-        console.log("response:.........", response.data);
         setNumberOfCard(response.data.total_cards);
         setNumberOfPage(Math.ceil(response.data.total_cards / 175));
         setCardsList([...response.data.data]);
