@@ -184,39 +184,6 @@ function SearchEngine() {
             </div>
           </div>
         </div>
-        {/* <div className="pagination">
-          <button
-            id="btn-first"
-            disabled={previousDisabled}
-            onClick={(e) => handleClick(e)}
-          >
-            First
-          </button>
-          <button
-            id="btn-previous"
-            disabled={previousDisabled}
-            onClick={(e) => handleClick(e)}
-          >
-            Previous
-          </button>
-          <span>
-            {currentPage}/{numberOfPage}
-          </span>
-          <button
-            id="btn-next"
-            disabled={nextDisabled}
-            onClick={(e) => handleClick(e)}
-          >
-            Next
-          </button>
-          <button
-            id="btn-last"
-            disabled={nextDisabled}
-            onClick={(e) => handleClick(e)}
-          >
-            Last
-          </button>
-        </div> */}
       </>
     );
   };
@@ -344,7 +311,7 @@ function SearchEngine() {
   }, [manaCost, typeManaCostSearch]);
 
   return (
-    <div className="cards-list">
+    <div className="w-full ">
       {displayPagination()}
 
       <Transition.Root show={open} as={Fragment}>
@@ -597,7 +564,7 @@ function SearchEngine() {
         </Dialog>
       </Transition.Root>
 
-      <div className="flex h-[45rem] justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
+      <div className="flex w-full h-[45rem] justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
         <CardDisplay listOfCard={cardsList} />
       </div>
     </div>

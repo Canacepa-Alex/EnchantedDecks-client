@@ -68,16 +68,11 @@ export default function SideBarHomepage() {
                           "relative cursor-default select-none py-2 pl-3 pr-9"
                         )
                       }
-                      value={deck._id}
+                      value={deck}
                     >
                       {({ selected, active }) => (
                         <>
                           <div className="flex items-center">
-                            {/* <img
-                              src={deck.avatar}
-                              alt=""
-                              className="h-5 w-5 flex-shrink-0 rounded-full"
-                            /> */}
                             <span
                               className={classNames(
                                 selected ? "font-semibold" : "font-normal",

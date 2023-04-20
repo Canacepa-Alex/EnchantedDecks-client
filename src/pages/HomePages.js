@@ -2,12 +2,31 @@
 import IsPrivate from "../components/IsPrivate";
 import SearchEngine from "../components/SearchEngine";
 import { AuthContext } from "../context/auth.context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import SideBarHomepage from "../components/SidebarHomepage";
+import axios from "axios";
 
 export default function HomePage() {
+  const [selected, setSelected] = useState(null);
+  const [decks, setDecks] = useState(null);
   const { user } = useContext(AuthContext);
-  console.log("Homepage user..........", user)
+
+  // const getDecks = () => {
+  //   axios
+  //     .get(`http://localhost:5005/api/users/${user._id}`)
+  //     .then((response) => {
+  //       setDecks(response.data.decks);
+  //       setSelected(response.data.decks[0])
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+  
+    
+  //   useEffect(() => {
+  //       getDecks();
+  //   }, []);
+
   return (
     <div>
       <header className="bg-white shadow">
@@ -18,18 +37,17 @@ export default function HomePage() {
         </div>
       </header>
       <main>
-        <div className="mx-auto h-full">
-          <div className="flex space-x-5 h-full w-full items-center justify-center 2xl:w-full tails-selected-element">
+        <div className="flex flex-row mx-auto w-screen h-full">
+          <div className="flex  h-full w-full items-center justify-center 2xl:w-full tails-selected-element">
             {user ? (
               <div className=" justify-center h-full w-96 bg-gray-300">
-                {" "}
-                <SideBarHomepage />{" "}
+                <SideBarHomepage />
               </div>
             ) : (
               ""
             )}
 
-            <div className="flex w-full h-full bg-gray-300 rounded-md 2xl:w-screen ">
+            <div className="flex w-full h-full ">
               <SearchEngine />
             </div>
           </div>
