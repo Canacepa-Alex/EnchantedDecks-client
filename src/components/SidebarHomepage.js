@@ -115,7 +115,7 @@ export default function SideBarHomepage() {
   }
 
   return (
-    <div>
+    <div className="h-full">
         CREATE DECK
         {decks ? displayDecksDropdown() : ""}
         <div className="overflow-auto hover:overflow-y-scroll"></div>

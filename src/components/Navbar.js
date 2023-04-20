@@ -9,17 +9,15 @@ export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-    { name: 'Reports', href: '#', current: false },
+    { name: 'Home', href: '/', current: true },
+    { name: 'Decks', href: '/decks', current: false },
+    { name: 'Events', href: '/events', current: false },
   ]
-  const userNavigation = [
+  const userNavigation = user ? [
     { name: 'Your Profile', href: `/users/${user._id}` },
     { name: 'Edit profile', href: `/users/${user._id}/edit` },
     { name: 'Sign out', href: () => {logOutUser()} },
-  ]
+  ] : [];
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
