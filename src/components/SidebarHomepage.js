@@ -5,6 +5,8 @@ import { AuthContext } from "../context/auth.context";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_SERVER_URL;
+
 export default function SideBarHomepage() {
   const [selected, setSelected] = useState(null);
   const [decks, setDecks] = useState(null);
@@ -12,7 +14,7 @@ export default function SideBarHomepage() {
 
   const getDecks = () => {
     axios
-      .get(`http://localhost:5005/api/users/${user._id}`)
+      .get(`${API_URL}/api/users/${user._id}`)
       .then((response) => {
         setDecks(response.data.decks);
         setSelected(response.data.decks[0]);

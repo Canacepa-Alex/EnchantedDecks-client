@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_SERVER_URL;
+
 export default function Profile(props) {
   const { userId } = useParams();
   const { user } = useContext(AuthContext);
@@ -10,7 +12,7 @@ export default function Profile(props) {
 
   const getUser = () => {
     axios
-      .get(`http://localhost:5005/api/users/${userId}`)
+      .get(`${API_URL}/api/users/${userId}`)
       .then((response) => {
         setUserProfile(response.data);
       })

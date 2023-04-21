@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 
-const API_URL = "http://localhost:5005";
+const API_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function DeckCreation() {
   const { user } = useContext(AuthContext);
