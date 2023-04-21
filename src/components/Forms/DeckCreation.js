@@ -11,6 +11,8 @@ export default function DeckCreation() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  const [responseFromDB, setResponseFromDB] = useState(undefined);
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   const navigate = useNavigate();
@@ -21,29 +23,28 @@ export default function DeckCreation() {
   const handleSignupSubmit = (e) => {
     e.preventDefault();
     const requestBody = { description, name };
+
+    const storedToken = localStorage.getItem("authToken");
+
     axios
-      .post(`${API_URL}/decks`, requestBody)
+      .post(`${API_URL}/api/decks`, requestBody, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
       .then((response) => {
-        navigate(`/profile/${user._id}`);
+        navigate(`/decks/${response.data.deck._id}`);
+
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
         setErrorMessage(errorDescription);
       });
   };
+
   return (
     <div>
       <div className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="max-w-lg pt-16 mx-auto sm:max-w-md">
-          <h1 className="text-3xl font-bold text-center text-primary-500">
-            Create your deck
-          </h1>
-          <p className="max-w-md mx-auto mt-4 text-center">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati
-            sunt dolores deleniti inventore quaerat mollitia?
-          </p>
           <div className="p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl dark:shadow-slate-800">
-            <p className="text-lg font-medium">Create your deck</p>
             <form
               className="flex flex-col gap-y-3"
               onSubmit={handleSignupSubmit}

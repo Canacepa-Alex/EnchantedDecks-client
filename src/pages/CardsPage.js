@@ -7,26 +7,10 @@ import SideBarHomepage from "../components/SidebarHomepage";
 
 import axios from "axios";
 
-export default function HomePage() {
+export default function CardsPage() {
   const [selected, setSelected] = useState(null);
   const [decks, setDecks] = useState(null);
   const { user } = useContext(AuthContext);
-
-  // const getDecks = () => {
-  //   axios
-  //     .get(`http://localhost:5005/api/users/${user._id}`)
-  //     .then((response) => {
-  //       setDecks(response.data.decks);
-  //       setSelected(response.data.decks[0])
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
-  
-    
-  //   useEffect(() => {
-  //       getDecks();
-  //   }, []);
 
   return (
     <div>
