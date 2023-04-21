@@ -51,10 +51,10 @@ export default function Profile(props) {
     return (
       <section class=" text-gray-600 h-[43rem] overflow-auto hover:overflow-y-scroll body-font">
           <Link
-            to={`/forms/deckCreate`}
+            to={`/forms/eventCreate`}
             className="flex justify-center text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md my-10 mx-2 px-5 py-2 text-sm font-medium"
           >
-            Create a deck
+            Create an Event
           </Link>
         <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-wrap -m-4">
