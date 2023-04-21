@@ -10,7 +10,7 @@ import axios from "axios";
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EditDeck() {
-  const { deckId } = useParams();
+  let { deckId } = useParams();
 
   const [deckDetail, setdeckDetail] = useState(null);
 
