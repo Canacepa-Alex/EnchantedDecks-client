@@ -12,20 +12,19 @@ import CardDisplay from "../components/CardDisplay";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
-export default function DeckDetail() {
-  const { deckId } = useParams();
+export default function EventDetail() {
+  const { eventId } = useParams();
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const [deckDetail, setdeckDetail] = useState(null);
+  const [eventDetail, seteventDetail] = useState(null);
 
   const getDeck = () => {
     axios
-      .get(`${API_URL}/api/decks/${deckId}`)
+      .get(`${API_URL}/api/events/${eventId}`)
       .then((response) => {
-        console.log("response getDeck:.........", response.data);
-        setdeckDetail(response.data);
+        seteventDetail(response.data);
       })
       .catch((error) => console.log(error));
   };
@@ -36,7 +35,7 @@ export default function DeckDetail() {
     const storedToken = localStorage.getItem("authToken");
 
     axios
-      .post(`${API_URL}/api/decksdelete/${deckId}`, {
+      .delete(`${API_URL}/api/events/${eventId}`, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
@@ -48,26 +47,18 @@ export default function DeckDetail() {
   };
 
   const displayButtons = () => {
-    if (user && deckDetail) {
-      if (user._id === deckDetail.user._id) {
+    if (user && eventDetail) {
+      if (user._id === eventDetail.creator._id) {
         return (
           <div className="flex w-full flex-col justify-center">
             <Link
-              key={deckDetail.name}
-              to={`/decks/${deckDetail._id}/edit`}
-              className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
-            >
-              Manage cards
-            </Link>
-            <Link
-              key={deckDetail.name}
-              to={`/forms/deckEdit/${deckDetail._id}`}
+              key={eventDetail.name}
+              to={`/forms/eventEdit/${eventDetail._id}`}
               className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
             >
               Edit details
             </Link>
             <button
-              key={deckDetail.name}
               onClick={""}
               className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
             >
@@ -85,11 +76,11 @@ export default function DeckDetail() {
         <header className="bg-white shadow">
           <div className=" flex flex-row justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {deckDetail.name}
+              {eventDetail.name}
             </h1>
 
             <h1 className="text-xl font-bold tracking-tight text-gray-900">
-              Made by: {deckDetail.user.name}
+              Made by: {eventDetail.creator.name}
             </h1>
           </div>
         </header>
@@ -100,18 +91,15 @@ export default function DeckDetail() {
               <div className=" w-96 sm:flex ">
               {displayButtons()}
               </div>
-              <p className="font-bold p-5">{deckDetail.description}</p>
+              <p className="font-bold p-5">{eventDetail.description}</p>
             </div>
             </div>
 
             <div className="flex w-full h-full ">
               <div className="w-full ">
                 <div className="flex w-full h-[45rem] justify-center flex-wrap overflow-auto hover:overflow-y-scroll">
-                  <DeckDisplay
-                    deckId={deckId}
-                    display="card"
-                    detailDeck={deckDetail}
-                  />
+                  Participants :
+                  {/* DISPLAY PARTICIPANTS */}
                 </div>
               </div>
             </div>
@@ -127,7 +115,7 @@ export default function DeckDetail() {
 
   useEffect(() => {
     displayButtons();
-  }, [deckDetail, user]);
+  }, [eventDetail, user]);
 
-  return <div>{deckDetail && <>{displayDeck()}</>}</div>;
+  return <div>{eventDetail && <>{displayDeck()}</>}</div>;
 }
