@@ -4,15 +4,13 @@ import DeckEdit from "../components/Forms/DeckEdit";
 import EventCreation from "../components/Forms/EventCration";
 import EventEdit from "../components/Forms/EventEdit";
 
-export default function FormsPage() {
+export default function FormsPageEdit() {
   const { form } = useParams();
+  console.log("FORM",form)
+
   const headerText = () => {
-    if (form === "deckCreate") {
-      return "Create your deck";
-    } else if (form === "deckEdit") {
+    if (form === "deckEdit") {
       return "Update your deck";
-    } else if (form === "eventCreate") {
-      return "Create your event";
     } else if (form === "eventEdit") {
       return "Update your event";
     }
@@ -27,9 +25,7 @@ export default function FormsPage() {
           </h1>
         </div>
       </header>
-      {form === "deckCreate" && <DeckCreation />}
       {form === "deckEdit" && <DeckEdit />}
-      {form === "eventCreate" && <EventCreation />}
       {form === "eventEdit" && <EventEdit />}
     </>
   );

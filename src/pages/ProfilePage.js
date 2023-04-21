@@ -4,6 +4,8 @@ import { AuthContext } from "../context/auth.context";
 import axios from "axios";
 import Deck from "../components/Deck";
 import { Tab } from "@headlessui/react";
+import Event from "../components/Event";
+import { CLOSING } from "ws";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -14,7 +16,6 @@ export default function Profile(props) {
 
   const [deckName, setDeckName] = useState(null);
   const [deckDescription, setDeckDescription] = useState(null);
-
   const getUser = () => {
     axios
       .get(`${API_URL}/api/users/${userId}`)
@@ -27,17 +28,44 @@ export default function Profile(props) {
   const getCurrentUser = () => {};
 
   const displayDecks = () => {
-    console.log("Deck update ?");
-    return userProfile.decks.map((deck, index) => {
-      return <Deck deckId={deck._id} key={index} />;
-    });
+    return (
+      <section class=" text-gray-600 h-[43rem] overflow-auto hover:overflow-y-scroll body-font">
+          <Link
+            to={`/forms/deckCreate`}
+            className="flex justify-center text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md my-10 mx-2 px-5 py-2 text-sm font-medium"
+          >
+            Create a deck
+          </Link>
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap -m-4">
+            {userProfile.decks.map((deck, index) => {
+              return <Deck deckId={deck._id} key={index} />;
+            })}
+          </div>
+        </div>
+      </section>
+    );
   };
-  
+
   const displayEvents = () => {
-    console.log("Deck update ?");
-    return userProfile.events.map((event, index) => {
-      return <Deck deckId={event._id} key={index} />;
-    });
+    return (
+      <section class=" text-gray-600 h-[43rem] overflow-auto hover:overflow-y-scroll body-font">
+          <Link
+            to={`/forms/deckCreate`}
+            className="flex justify-center text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md my-10 mx-2 px-5 py-2 text-sm font-medium"
+          >
+            Create a deck
+          </Link>
+        <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-wrap -m-4">
+            {userProfile.events.map((event, index) => {
+                console.log(event._id)
+              return <Event eventId={event._id} key={index} />;
+            })}
+          </div>
+        </div>
+      </section>
+    );
   };
 
   const handleSubmit = (element) => {
@@ -100,9 +128,9 @@ export default function Profile(props) {
 
       {userProfile ? (
         <div className="flex justify-center ">
-          <div className="w-full px-2 py-5 sm:px-0">
+          <div className="w-full px-2 sm:px-0">
             <Tab.Group>
-              <Tab.List className="flex max-w-md space-x-1 rounded-md bg-gray-800 p-1">
+              <Tab.List className="flex w-full justify-center items-center space-x-1 rounded-md bg-gray-700 p-1">
                 {Object.keys(categories).map((category) => (
                   <Tab
                     key={category}

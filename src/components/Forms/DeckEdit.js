@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/auth.context";
 const API_URL = "http://localhost:5005";
 
 export default function DeckEdit() {
-  const { deckId } = useParams();
+  const { id } = useParams();
   const { user } = useContext(AuthContext);
 
   const [name, setName] = useState("");
@@ -26,11 +26,11 @@ export default function DeckEdit() {
     const storedToken = localStorage.getItem("authToken");
 
     axios
-      .put(`${API_URL}/api/decks/${deckId}`, requestBody, {
+      .put(`${API_URL}/api/decks/${id}`, requestBody, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        navigate(`/decks/${response.data.deck._id}`);
+        navigate(`/decks/${response.data._id}`);
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;

@@ -16,7 +16,6 @@ export default function SideBarHomepage() {
       .then((response) => {
         setDecks(response.data.decks);
         setSelected(response.data.decks[0]);
-        console.log(response.data);
       })
       .catch((error) => console.log(error));
   };
@@ -24,7 +23,6 @@ export default function SideBarHomepage() {
   const getNumberOfCards = (cards) => {
     let numberOfCards = 0;
     cards.map((card) => {
-      console.log("card ==>", card);
       return (numberOfCards += card.numberOfCard);
     });
     return numberOfCards;

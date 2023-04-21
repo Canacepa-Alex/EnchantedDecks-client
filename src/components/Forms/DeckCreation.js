@@ -31,7 +31,6 @@ export default function DeckCreation() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        console.log();
         navigate(`/decks/${response.data.deck._id}`);
 
       })

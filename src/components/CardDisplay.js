@@ -5,7 +5,6 @@ import CardDetail from "./CardDetails";
 
 function CardDisplay(props) {
   const [openModalId, setOpenModalId] = useState(null);
-  console.log("PROPS", props);
   const handleOpenModal = (id) => {
     setOpenModalId(id);
   };
@@ -40,52 +39,23 @@ function CardDisplay(props) {
                   >
                     {card.name}
                   </div>
-                  <div className="mb-4 flex">
+                  <div className="flex flex-col">
                     <button
                       type="button"
                       onClick={() => handleOpenModal(card.id)}
-                      className="inline-flex items-center rounded-md px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                      className="m-1 text-center hover:bg-gray-700 hover:text-white rounded-md px-5 py-2 text-sm font-medium"
                       id={card.id}
                     >
                       Details
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4 ml-2 -mr-1"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                        />
-                      </svg>
                     </button>
-                  </div>
-                  <div className="mb-4 flex">
+
                     {props.handleClick && (
                       <button
                         onClick={(e) => props.handleClick(e.target.id)}
-                        className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
+                        className="m-1 text-center hover:bg-gray-700 hover:text-white rounded-md px-5 py-2 text-sm font-medium"
                         id={card.id}
                       >
                         Add to Deck
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4 ml-2 -mr-1"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                          />
-                        </svg>
                       </button>
                     )}
                   </div>

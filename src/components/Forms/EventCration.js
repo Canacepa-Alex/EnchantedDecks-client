@@ -35,7 +35,7 @@ export default function EventCreation() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        navigate(`/decks/${response.data.event._id}`);
+        navigate(`/events/${response.data._id}`);
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;

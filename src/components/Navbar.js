@@ -9,8 +9,8 @@ export default function Navbar() {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
   
   const navigation = [
-    { name: 'Enchated Decks', href: '/', current: true },
-    { name: 'Cards', href: '/', current: false },
+    { name: 'Enchanted Decks', href: '/', current: true },
+    { name: 'Cards', href: '/cards', current: false },
     { name: 'Decks', href: '/decks', current: false },
     { name: 'Events', href: '/events', current: false },
   ]

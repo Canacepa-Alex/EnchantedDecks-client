@@ -25,14 +25,12 @@ export default function EditDeck() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        console.log("response.........", response);
         setdeckDetail(response.data);
       })
       .catch((error) => console.log(error));
   };
 
   const handleClickAdd = (e) => {
-    console.log("test e.....", e);
     const requestBody = { cardKey: e, numberOfCard: 1 };
     const storedToken = localStorage.getItem("authToken");
     axios
@@ -40,7 +38,6 @@ export default function EditDeck() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        console.log("response.........", response);
         setdeckDetail(response.data);
         deckId = deckId;
       })
@@ -48,7 +45,6 @@ export default function EditDeck() {
   };
 
   const handleClickRemove = (e) => {
-    console.log("test e.....", e);
     const requestBody = { cardKey: e, numberOfCard: 1 };
     const storedToken = localStorage.getItem("authToken");
     axios
@@ -56,7 +52,6 @@ export default function EditDeck() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        console.log("response.........", response);
         setdeckDetail(response.data);
         deckId = deckId;
       })
@@ -70,7 +65,6 @@ export default function EditDeck() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        console.log("response.........", response);
         navigate(`/`);
       })
       .catch((error) => console.log(error));
@@ -91,15 +85,29 @@ export default function EditDeck() {
       </header>
       <div className="flex  h-full w-full items-center justify-center 2xl:w-full tails-selected-element">
       {deckDetail ? (
-        <div className=" justify-center h-full w-96 bg-gray-300">
-          <div className="hidden  m-1 sm:flex sm:flex-col sm:items-end">
+        <div className=" justify-center h-[48.8rem] w-96 bg-gray-300">
+          <div className="flex w-full flex-col justify-center">
             <Link
-              // key={deckDetail.name}
-              // to={`/decks/${deck._id}/edit`}
-              className="bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              key={deckDetail.name}
+              to={`/decks/${deckDetail._id}`}
+              className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
             >
-              Edit cards
+              Details
             </Link>
+            <Link
+              key={deckDetail.name}
+              to={`/forms/deckEdit/${deckDetail._id}`}
+              className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
+            >
+              Edit details
+            </Link>
+            <button
+              key={deckDetail.name}
+              onClick={handleClickDelete}
+              className="m-1 text-center bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md mx-2 px-5 py-2 text-sm font-medium"
+            >
+              Delete
+            </button>
           </div>
           <DeckDisplay
             deckId={deckId}
@@ -108,7 +116,7 @@ export default function EditDeck() {
             handleClickRemove={handleClickRemove}
           />
           
-          <button onClick={handleClickDelete}>Delete Deck</button>
+          
         </div>
             ) : (
               ""

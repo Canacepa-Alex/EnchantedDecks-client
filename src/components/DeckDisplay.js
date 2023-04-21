@@ -1,26 +1,34 @@
+import { Transition } from "@headlessui/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-
-
+import CardDetail from "./CardDetails";
+import CardDisplay from "./CardDisplay";
 
 function DeckDisplay(props) {
   const IdDeck = props.deckId;
   const [deckCards, setDeckCards] = useState([]);
-  console.log("PROPS", props.detailDeck);
+
+  const [openModalId, setOpenModalId] = useState(null);
+  const handleOpenModal = (id) => {
+    setOpenModalId(id);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModalId(null);
+  };
+
 
   const getCardsDetail = () => {
     if (props.detailDeck) {
       setDeckCards([]);
       props.detailDeck.cards.map((card, index) => {
-        console.log("CARD ID", card._id);
         axios
-          .get(`https://api.scryfall.com/cards/${card.cardId}`)
+          .get(`https://api.scryfall.com/cards/${card.cardKey}`)
           .then((response) => {
             response.data.numberOfCard = props.detailDeck.cards[index].numberOfCard;
 
             setDeckCards((oldArray) => [...oldArray, response.data]);
-            console.log(deckCards);
           })
           .catch((error) => console.log(error));
       });
@@ -39,103 +47,46 @@ function DeckDisplay(props) {
     return deckCards.map((card, index) => {
         return (
           <>
-          <div
-            key={index}
-            className="relative m-2 grid h-[20rem] w-full max-w-[14rem] items-end justify-center text-center rounded-lg shadow"
-          >
-
-          </div>
-          <div
-            key={index}
-            className="flex rounded-md "
-          >
-
-            <div
-                color="transparent"
-                className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(${card.image_uris.border_crop})`,
-                }}
-              >
-                <div className="to-bg-black-10 absolute inset-0 h-full w-full hover:bg-gradient-to-t from-black/80 via-black/50">
-                  <div className="flex flex-col justify-between h-full w-full py-8 px-6 md:px-12 text-transparent hover:text-white dark:hover:text-white">
-                    <div
-                      variant="h2"
-                      color="white"
-                      className="mb-2 text-2xl font-bold tracking-tight"
-                    >
-                      {card.name}
-                    </div>
-                    <div className="mb-4 flex">
-                      <button
-                        type="button"
-                        // onClick={() => handleOpenModal(card.id)}
-                        className="inline-flex items-center rounded-md px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                        id={card.id}
-                      >
-                        Details
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4 ml-2 -mr-1"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="mb-4 flex">
-                      {props.handleClick && (
-                        <button
-                          onClick={(e) => props.handleClick(e.target.id)}
-                          className="inline-flex items-center rounded-xl px-4 py-1 text-base font-medium transition duration-200 hover:bg-purple-600 active:bg-purple-700  dark:hover:bg-purple-300 dark:active:bg-purple-200"
-                          id={card.id}
-                        >
-                          Add to Deck
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-4 h-4 ml-2 -mr-1"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            
-            <p>{card.numberOfCard}</p>
-          </div>
+          <CardDisplay listOfCard={[card]} />
+          <div>{card.numberOfCard} cards</div>
           </>
         );
       });
   };
 
   const displayDeckList = () => {
-    return deckCards.map((card, index) => {
-        return (
-          <div key={index}>
-              <p>Name: {card.name}</p>
-            <p>Number: {card.numberOfCard}</p>
-            <button id={card.id} onClick={(e) => props.handleClickRemove(e.target.id)}>remove</button>
-          </div>
-        );
-      });
+    return (
+      <div>
+        <ul role="list" className="m-3 divide-y divide-gray-900 ">
+        {deckCards.map((card) => (
+          <li key={card._id} className="flex bg-white rounded-md justify-between gap-x-6 py-5">
+            <div className="flex m-1 gap-x-4">
+            {card.image_uris &&
+              <img
+                className="h-12 w-14 flex-none rounded-md bg-gray-50"
+                src= {card.image_uris.art_crop}
+                alt=""
+              />
+            }
+              <div className="min-w-0 flex-auto">
+                <p className="text-sm font-semibold leading-6 text-gray-900">
+                  {card.name}
+                </p>
+                <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                {card.numberOfCard} cards
+                </p>
+              </div>
+            </div>
+            <div className="hidden  m-1 sm:flex sm:flex-col sm:items-end">
+            <button id={card.id} onClick={(e) => props.handleClickRemove(e.target.id)} className="bg-gray-900 text-white hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+            remove
+            </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      </div>
+    );
   };
 
   
@@ -146,6 +97,8 @@ function DeckDisplay(props) {
 
   useEffect(() => {
     displayDeck();
+    displayDeckCard();
+    displayDeckList();
   }, [deckCards]);
 
   return <>{props.detailDeck ? displayDeck() : <p>..loading</p>}</>;
