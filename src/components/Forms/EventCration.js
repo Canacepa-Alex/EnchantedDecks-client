@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 
-const API_URL = "http://localhost:5005";
+const API_URL = process.env.REACT_APP_SERVER_URL;
 
 export default function EventCreation() {
   const { user } = useContext(AuthContext);
@@ -35,7 +35,7 @@ export default function EventCreation() {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then((response) => {
-        navigate(`/events/${response.data._id}`);
+        navigate(`/events/${response.data.eventResponse._id}`);
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
